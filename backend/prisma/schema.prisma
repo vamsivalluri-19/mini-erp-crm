@@ -1,0 +1,149 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  ADMIN
+  SALES
+  WAREHOUSE
+  ACCOUNTS
+}
+
+enum CustomerType {
+  RETAIL
+  WHOLESALE
+  DISTRIBUTOR
+}
+
+enum CustomerStatus {
+  LEAD
+  ACTIVE
+  INACTIVE
+}
+
+enum StockMovementType {
+  IN
+  OUT
+}
+
+enum ChallanStatus {
+  DRAFT
+  CONFIRMED
+  CANCELLED
+}
+
+model User {
+  id               String             @id @default(uuid()) @db.Uuid
+  name             String
+  email            String             @unique
+  password         String
+  role             UserRole
+  isActive         Boolean            @default(true)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  followUps        CustomerFollowUp[]
+  stockMovements   StockMovement[]
+  challans         Challan[]
+  auditLogs        AuditLog[]
+}
+
+model Customer {
+  id           String             @id @default(uuid()) @db.Uuid
+  customerName String
+  mobile       String
+  email        String?
+  businessName String
+  gstNumber    String?
+  customerType CustomerType
+  address      String?
+  status       CustomerStatus     @default(LEAD)
+  followUpDate DateTime?
+  notes        String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  followUps    CustomerFollowUp[]
+  challans     Challan[]
+}
+
+model CustomerFollowUp {
+  id           String    @id @default(uuid()) @db.Uuid
+  customerId   String    @db.Uuid
+  customer     Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  note         String
+  followUpDate DateTime
+  createdBy    String    @db.Uuid
+  creator      User      @relation(fields: [createdBy], references: [id], onDelete: Restrict)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Product {
+  id                String          @id @default(uuid()) @db.Uuid
+  productName       String
+  sku               String          @unique
+  category          String
+  unitPrice         Float
+  currentStock      Int             @default(0)
+  minimumStock      Int             @default(0)
+  warehouseLocation String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  stockMovements    StockMovement[]
+  challanItems      ChallanItem[]
+}
+
+model StockMovement {
+  id           String            @id @default(uuid()) @db.Uuid
+  productId    String            @db.Uuid
+  product      Product           @relation(fields: [productId], references: [id], onDelete: Restrict)
+  quantity     Int
+  movementType StockMovementType
+  reason       String
+  createdBy    String            @db.Uuid
+  creator      User              @relation(fields: [createdBy], references: [id], onDelete: Restrict)
+  createdAt    DateTime          @default(now())
+}
+
+model Challan {
+  id            String        @id @default(uuid()) @db.Uuid
+  challanNumber String        @unique
+  customerId    String        @db.Uuid
+  customer      Customer      @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  totalQuantity Int           @default(0)
+  status        ChallanStatus @default(DRAFT)
+  createdBy     String        @db.Uuid
+  creator       User          @relation(fields: [createdBy], references: [id], onDelete: Restrict)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  items         ChallanItem[]
+}
+
+model ChallanItem {
+  id          String   @id @default(uuid()) @db.Uuid
+  challanId   String   @db.Uuid
+  challan     Challan  @relation(fields: [challanId], references: [id], onDelete: Cascade)
+  productId   String   @db.Uuid
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productName String
+  sku         String
+  unitPrice   Float
+  quantity    Int
+  total       Float
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  oldValue  String?
+  newValue  String?
+  timestamp DateTime @default(now())
+}
