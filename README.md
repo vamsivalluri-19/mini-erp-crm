@@ -16,7 +16,7 @@ https://mini-erp-crm-lovat-eight.vercel.app/products
 ### Backend API
 
 🔗 **Live Backend API:**  
-(https://mini-erp-crm-n6mw.onrender.com)
+https://mini-erp-crm-n6mw.onrender.com
 > The backend provides the REST APIs used by the React frontend for authentication, customer management, products, inventory, stock movements, and sales challans.
 
 ### API Documentation
