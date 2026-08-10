@@ -100,13 +100,28 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Welcome Banner */}
-      <div className="rounded-2xl bg-slate-900 p-6 text-white shadow-lg relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/20 rounded-full blur-[60px]" />
-        <div className="relative z-10 space-y-2">
-          <h3 className="text-xl font-bold">Hello, {currentUser?.name}!</h3>
-          <p className="text-sm text-slate-400 max-w-xl">
-            You are logged in as <span className="text-indigo-400 font-bold uppercase">{role}</span>. Here is an overview of OpsFlow's distribution network and CRM actions today.
-          </p>
+      <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-8 text-white shadow-xl relative overflow-hidden border border-slate-800/50">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/20 rounded-full blur-[80px]" />
+        <div className="absolute bottom-0 left-1/3 w-40 h-40 bg-violet-500/10 rounded-full blur-[50px]" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="space-y-3">
+            <span className="inline-flex items-center rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-300 border border-indigo-500/20 uppercase tracking-wider">
+              Control Panel
+            </span>
+            <h3 className="text-2xl font-black tracking-tight md:text-3xl">Welcome Back, {currentUser?.name}!</h3>
+            <p className="text-sm text-slate-400 max-w-xl leading-relaxed">
+              System Operations Portal is active. You are signed in as <span className="text-indigo-300 font-extrabold uppercase tracking-wide">{role}</span>. Review real-time inventory adjustments and CRM updates below.
+            </p>
+          </div>
+          <div className="shrink-0 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-300 font-bold">
+              {new Date().toLocaleDateString([], { day: '2-digit' })}
+            </div>
+            <div>
+              <p className="text-xs text-slate-400 font-semibold">{new Date().toLocaleDateString([], { weekday: 'long' })}</p>
+              <p className="text-sm font-bold">{new Date().toLocaleDateString([], { month: 'short', year: 'numeric' })}</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -114,7 +129,7 @@ export const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {/* Card 1: Customers CRM (Only visible if not WAREHOUSE) */}
         {role !== 'WAREHOUSE' && (
-          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between hover:-translate-y-1 hover:shadow-md hover:border-indigo-150 transition-all duration-300">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Total Customers</span>
               <h3 className="text-3xl font-extrabold text-slate-800">{stats.customers.total}</h3>
@@ -130,7 +145,7 @@ export const Dashboard: React.FC = () => {
         )}
 
         {/* Card 2: Products Catalog */}
-        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between">
+        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between hover:-translate-y-1 hover:shadow-md hover:border-violet-150 transition-all duration-300">
           <div className="space-y-1">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Products Catalog</span>
             <h3 className="text-3xl font-extrabold text-slate-800">{stats.products.total}</h3>
@@ -144,7 +159,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Card 3: Stock Status Warnings */}
-        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between">
+        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between hover:-translate-y-1 hover:shadow-md hover:border-red-150 transition-all duration-300">
           <div className="space-y-1">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Stock Warnings</span>
             <h3 className="text-3xl font-extrabold text-slate-800">
@@ -162,7 +177,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Card 4: Sales Challans (Only visible if not WAREHOUSE) */}
         {role !== 'WAREHOUSE' && (
-          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between hover:-translate-y-1 hover:shadow-md hover:border-emerald-150 transition-all duration-300">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Sales Challans</span>
               <h3 className="text-3xl font-extrabold text-slate-800">{stats.challans.total}</h3>
@@ -179,7 +194,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Warehouse Alternative Card 4: Stock Flow (Only visible to WAREHOUSE) */}
         {role === 'WAREHOUSE' && (
-          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex items-center justify-between hover:-translate-y-1 hover:shadow-md hover:border-emerald-150 transition-all duration-300">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Stock Movements Flow</span>
               <h3 className="text-2xl font-extrabold text-slate-800">Ledger Flow</h3>
@@ -199,7 +214,7 @@ export const Dashboard: React.FC = () => {
       {role !== 'WAREHOUSE' && stats.charts.monthlyChallans.length > 0 && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Chart 1: Monthly Challan Quantity Trends */}
-          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm lg:col-span-2">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm lg:col-span-2 hover:-translate-y-0.5 hover:shadow-md transition-all duration-300">
             <h4 className="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider">
               Challan Flow Trends (Quantity Units)
             </h4>
@@ -219,7 +234,7 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Chart 2: Challan Status Division */}
-          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex flex-col justify-between">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm flex flex-col justify-between hover:-translate-y-0.5 hover:shadow-md transition-all duration-300">
             <h4 className="text-sm font-bold text-slate-800 mb-2 uppercase tracking-wider">
               Challan Statuses
             </h4>

@@ -125,6 +125,7 @@ export const Login: React.FC = () => {
                 <input
                   id="email"
                   type="email"
+                  autoComplete="username"
                   placeholder="name@opsflow.com"
                   {...register('email')}
                   className={`block w-full rounded-xl border py-3 pl-10 pr-4 text-sm outline-none transition-all placeholder:text-slate-400 ${
@@ -151,6 +152,7 @@ export const Login: React.FC = () => {
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   placeholder="••••••••"
                   {...register('password')}
                   className={`block w-full rounded-xl border py-3 pl-10 pr-10 text-sm outline-none transition-all placeholder:text-slate-400 ${

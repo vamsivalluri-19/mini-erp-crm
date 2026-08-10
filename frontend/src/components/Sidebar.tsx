@@ -159,10 +159,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 to={item.path}
                 onClick={onClose}
                 className={({ isActive }) =>
-                  `flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                  `flex items-center gap-3.5 rounded-xl px-4 py-3.5 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] ${
                     isActive
-                      ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
-                      : 'hover:bg-slate-800/60 hover:text-white text-slate-400'
+                      ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-600/35 border-l-4 border-indigo-400 pl-3'
+                      : 'hover:bg-slate-800/70 hover:text-slate-100 text-slate-400'
                   }`
                 }
               >
